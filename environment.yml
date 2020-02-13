@@ -1,0 +1,28 @@
+name: greenland
+channels:
+- conda-forge
+dependencies:
+- python
+- pip
+- ipython
+- jupyter
+- notebook
+- ipywidgets
+- numpy
+- pandas
+- scipy
+- statsmodels
+- netcdf4
+- xarray
+- matplotlib
+- seaborn
+- bokeh
+- basemap
+- cartopy
+- geopy
+- rasterio
+- PyPDF2
+- h5py
+- pip:
+  - pysolar
+  - ecmwf-api-client
