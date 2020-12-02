@@ -1,5 +1,6 @@
 """
-To install, run `python setup.py install` at the command line
+To install: At the command line, run `python setup.py install` or 
+`python setup.py develop` (if you'll be editing the source code).
 """
 
 from setuptools import setup
