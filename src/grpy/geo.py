@@ -128,10 +128,6 @@ def inside_polygon(x, y, poly_x, poly_y):
     return inside
 
 
-
-###### Old functions for using basemap
-
-
 def convert_coords(xin, yin, m, big=1e20, inverse=False):
     """Return x, y coords in Basemap m projection, accounting for NaNs.
 
@@ -166,44 +162,6 @@ def convert_coords(xin, yin, m, big=1e20, inverse=False):
     xout[abs(xout) > big] = np.nan
     yout[abs(yout) > big] = np.nan
     return xout, yout
-
-
-def plot_parallels_meridians(m, parallels=[], meridians=[], latmin=0,
-                            latmax=90, lonmin=-180, lonmax=180,
-                            nx_parallels=1000, ny_meridians=1000, **kwargs):
-    """Plot parallels and meridians on a map.
-
-    Parameters
-    ----------
-    m : Basemap object
-        Map projection to convert lat-lon into map coordinates
-    parallels, meridians : list or np.array, optional
-        Latitudes of parallels to plot and longitudes of meridians to
-        plot.  To omit either one, set to an empty list [].
-    latmin, latmax, lonmin, lonmax : float, optional
-        Extent of meridians (latmin, latmax) and parallels (lonmin, lonmax)
-        to draw.
-    nx_parallels, ny_meridians : int, optional
-        Number of points to create line segments with np.linspace().
-    **kwargs : keyword arguments, optional
-        Keyword arguments to plt.plot()
-    """
-    parallels_lons = np.linspace(lonmin, lonmax, nx_parallels)
-    meridians_lats = np.linspace(latmin, latmax, ny_meridians)
-
-    for lat in parallels:
-        xs, ys = m(parallels_lons, [lat] * len(parallels_lons))
-        plt.plot(xs, ys, **kwargs)
-    for lon in meridians:
-        xs, ys = m([lon] * len(meridians_lats), meridians_lats)
-        plt.plot(xs, ys, **kwargs)
-    return None
-
-
-def format_ticks(xfmt='%.1e', yfmt='%.1e'):
-    plt.gca().xaxis.set_major_formatter(FormatStrFormatter(xfmt))
-    plt.gca().yaxis.set_major_formatter(FormatStrFormatter(yfmt))
-    return None
 
 
 def get_map_info(m):
@@ -262,6 +220,46 @@ def equal_area_grid(xmin, xmax, ymin, ymax, m, res=200000):
     grid.attrs['resolution'] = res
     grid.attrs['map_info'] = str(get_map_info(m))
     return grid
+
+
+############## Old functions for plotting with basemap ################
+
+def plot_parallels_meridians(m, parallels=[], meridians=[], latmin=0,
+                            latmax=90, lonmin=-180, lonmax=180,
+                            nx_parallels=1000, ny_meridians=1000, **kwargs):
+    """Plot parallels and meridians on a map.
+
+    Parameters
+    ----------
+    m : Basemap object
+        Map projection to convert lat-lon into map coordinates
+    parallels, meridians : list or np.array, optional
+        Latitudes of parallels to plot and longitudes of meridians to
+        plot.  To omit either one, set to an empty list [].
+    latmin, latmax, lonmin, lonmax : float, optional
+        Extent of meridians (latmin, latmax) and parallels (lonmin, lonmax)
+        to draw.
+    nx_parallels, ny_meridians : int, optional
+        Number of points to create line segments with np.linspace().
+    **kwargs : keyword arguments, optional
+        Keyword arguments to plt.plot()
+    """
+    parallels_lons = np.linspace(lonmin, lonmax, nx_parallels)
+    meridians_lats = np.linspace(latmin, latmax, ny_meridians)
+
+    for lat in parallels:
+        xs, ys = m(parallels_lons, [lat] * len(parallels_lons))
+        plt.plot(xs, ys, **kwargs)
+    for lon in meridians:
+        xs, ys = m([lon] * len(meridians_lats), meridians_lats)
+        plt.plot(xs, ys, **kwargs)
+    return None
+
+
+def format_ticks(xfmt='%.1e', yfmt='%.1e'):
+    plt.gca().xaxis.set_major_formatter(FormatStrFormatter(xfmt))
+    plt.gca().yaxis.set_major_formatter(FormatStrFormatter(yfmt))
+    return None
 
 
 def coastline_helper(resolution='c', ll_lat=None, ll_lon=None,
