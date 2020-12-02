@@ -1,7 +1,7 @@
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import cartopy.io.shapereader as shpreader
-from geopy.distance import vincenty
+from geopy.distance import geodesic
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 from matplotlib.ticker import FormatStrFormatter
@@ -11,9 +11,9 @@ import xarray as xr
 
 
 def geodist(lat1, lon1, lat2, lon2):
-    """Return the Vincenty distance in metres from (lat1, lon1) to (lat2, lon2).
+    """Return the geodesic distance in metres from (lat1, lon1) to (lat2, lon2).
     """
-    return vincenty((lat1, lon1), (lat2, lon2)).meters
+    return geodesic((lat1, lon1), (lat2, lon2)).meters
 
 def country_boundary(country_name, resolution='110m', polygon_index=-1):
     shpfilename = shpreader.natural_earth(resolution=resolution, category='cultural',
