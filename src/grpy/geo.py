@@ -38,9 +38,8 @@ def domain_crs(central_latitude=90, central_longitude=-40):
                                           central_longitude=central_longitude)
 
 
-def domain_map(res='50m', land_kw={'color' : '0.7'}, gridlines_kw={'color' : '0.8'},
-               greenland_zoom=False, xlims=(-2e6, 2e6), ylims=(-3.8e6, 0),
-               crs=None, fig=None, nrows=1, ncols=1, subplot=1):
+def domain_map(greenland_zoom=False, xlims=(-2e6, 2e6), ylims=(-3.8e6, 0),
+               crs=None, fig=None, nrows=1, ncols=1, subplot=1, res='50m'):
     """Plot Greenland domain map and return ax, crs."""
     if greenland_zoom:
         xlims = -0.9e6, 0.8e6
@@ -50,12 +49,14 @@ def domain_map(res='50m', land_kw={'color' : '0.7'}, gridlines_kw={'color' : '0.
     if fig is None:
         fig = plt.gcf()
     ax = fig.add_subplot(nrows, ncols, subplot, projection=crs)
-    ax.set_xlim(xlims)
-    ax.set_ylim(ylims)
+    extent = xlims[0], xlims[1], ylims[0], ylims[1]
+    ax.set_extent(extent, crs)
 
     cf = cfeature.NaturalEarthFeature('physical', 'land', res)
-    ax.add_feature(cf, **land_kw)
-    ax.gridlines(crs=ccrs.Geodetic(), **gridlines_kw)
+    ax.add_feature(cfeature.LAND)
+    ax.add_feature(cfeature.OCEAN)
+    ax.gridlines()
+    
     return ax, crs
 
 
